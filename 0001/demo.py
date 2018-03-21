@@ -52,12 +52,13 @@ COUNT = 10
 
 # 不重复优惠码列表
 def get_code_list(counter):
-    if counter <= COUNT:
-        temp_code = get_code()
-        if temp_code not in resultList:
-            resultList.append(temp_code)
-            counter += 1
-        get_code_list(counter)
+    if counter > COUNT:
+        return None
+    temp_code = get_code()
+    if temp_code not in resultList:
+        resultList.append(temp_code)
+        counter += 1
+    get_code_list(counter)
 
 
 if __name__ == '__main__':
