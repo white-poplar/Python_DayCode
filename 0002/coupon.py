@@ -62,6 +62,10 @@ def get_code_list(counter=1):
     get_code_list(counter)
 
 
+# 是否存在数据表
+def exist_of_table(table_name):
+    pass
+
 # mysql
 def save_mysql(list=None):
     conn = mysql.connector.connect(
