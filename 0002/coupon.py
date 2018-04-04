@@ -67,14 +67,35 @@ def exist_of_table(table_name):
     pass
 
 # mysql
-def save_mysql(list=None):
+
+
+def save_mysql(code_list=None):
     conn = mysql.connector.connect(
         host='127.0.0.1', port=3306, user='root', password='', database='daycode')
-    cursor = conn.cursor()
-    cursor.execute('CREATE TABLE `daycode`.`coupon` ( `Id` BIGINT NOT NULL AUTO_INCREMENT COMMENT \'标识\' , `Code` VARCHAR(200) NOT NULL COMMENT \'优惠码\' , PRIMARY KEY (`Id`)) ENGINE = MyISAM COMMENT = \'优惠码表\';')
-    cursor.execute('insert into coupon(Code) values (%s)', ['5566'])
+    cur = conn.cursor()
+
+    table_sql = 'CREATE TABLE IF NOT EXISTS `daycode`.`coupon` ( `Id` BIGINT NOT NULL AUTO_INCREMENT COMMENT \'标识\' , `Code` VARCHAR(200) NOT NULL COMMENT \'优惠码\' , PRIMARY KEY (`Id`)) ENGINE = MyISAM COMMENT = \'优惠码表\';'
+    cur.execute(table_sql)
+
+    # insert_sql = 'insert into coupon(Code) values (%s)'
+    # param = ['5566']
+    # cur.execute(insert_sql, param)
+
+    # for _i in code_list:
+    #     cur.execute('insert into coupon(Code) values (%s)', ['' + _i + ''])
+
+    insert_sql = 'insert into coupon(Code) values (%s)'
+    # param = [['aaa'], ['bbb']]
+    # param = (['aaa'], ['bbb'])
+    param = [['aaa'], ['bbb']]
+    cur.executemany(insert_sql, param)
+
     conn.commit()
-    cursor.close()
+
+    if cur:
+        cur.close()
+    if conn:
+        conn.close()
 
 
 if __name__ == '__main__':
@@ -87,4 +108,4 @@ if __name__ == '__main__':
 
     # pip install mysql-connector --驱动
 
-    save_mysql()
+    save_mysql(resultList)
