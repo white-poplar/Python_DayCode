@@ -9,7 +9,8 @@ import os
 import glob
 import random
 import string
-import mysql.connector
+import redis
+
 
 
 # 26 个大写字母
@@ -62,14 +63,10 @@ def get_code_list(counter=1):
     get_code_list(counter)
 
 
-# 是否存在数据表
-def exist_of_table(table_name):
-    pass
-
-# mysql
+# redis
+def save_redis(code_list=None):
 
 
-def save_mysql(code_list=None):
     conn = mysql.connector.connect(
         host='127.0.0.1', port=3306, user='root', password='', database='daycode')
     cur = conn.cursor()
@@ -106,10 +103,6 @@ if __name__ == '__main__':
     get_code_list()
     print(resultList)
 
-    # show variables like '%char%'; --mysql 编码
+    # pip install redis --驱动
 
-    # pip install mysql-connector-python --allow-external mysql-connector-python --驱动
-
-    # pip install mysql-connector --驱动
-
-    save_mysql(resultList)
+    save_redis(resultList)
