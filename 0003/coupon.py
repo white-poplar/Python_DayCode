@@ -65,43 +65,20 @@ def get_code_list(counter=1):
 
 # redis
 def save_redis(code_list=None):
+    pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
+    r = redis.Redis(connection_pool=pool)
 
-
-    conn = mysql.connector.connect(
-        host='127.0.0.1', port=3306, user='root', password='', database='daycode')
-    cur = conn.cursor()
-
-    table_sql = 'CREATE TABLE IF NOT EXISTS `daycode`.`coupon` ( `Id` BIGINT NOT NULL AUTO_INCREMENT COMMENT \'标识\' , `Code` VARCHAR(200) NOT NULL COMMENT \'优惠码\' , PRIMARY KEY (`Id`)) ENGINE = MyISAM COMMENT = \'优惠码表\';'
-    cur.execute(table_sql)
-
-    # insert_sql = 'insert into coupon(Code) values (%s)'
-    # param = ['5566']
-    # cur.execute(insert_sql, param)
-
-    # for _i in code_list:
-    #     cur.execute('insert into coupon(Code) values (%s)', ['' + _i + ''])
-
-    insert_sql = 'insert into coupon(Code) values (%s)'
+    # r = redis.Redis(host='localhost', port=6379, decode_responses=True)
     
-    # param = (['aaa'], ['bbb'])
-    
-    # param = [['aaa'], ['bbb']]
-
-    param = [code_list[i:i + 1] for i in range(0, len(code_list), 1)]
-
-    cur.executemany(insert_sql, param)
-
-    conn.commit()
-
-    if cur:
-        cur.close()
-    if conn:
-        conn.close()
+    r.set('code',code_list)
+    # print(r['code'])
+    print('redis_data', r.get('code'))
+    print(type(r.get('code')))
 
 
 if __name__ == '__main__':
     get_code_list()
-    print(resultList)
+    print('code_list', resultList)
 
     # pip install redis --驱动
 
